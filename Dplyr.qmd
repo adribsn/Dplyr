@@ -1,0 +1,60 @@
+---
+title: "Dplyr"
+author: "Adrien Bouisson"
+format: html
+editor: visual
+---
+
+```{r}
+here::i_am("Dplyr.Rproj")
+library(here)
+library(dplyr)
+```
+# Exercice 1
+
+## Question 1
+
+```{r}
+spotify <- readRDS('top-spotify-hits-2000-2019.Rds')
+```
+
+```{r}
+s <- count(spotify%>% distinct(song) )
+a <- count(spotify%>% distinct(artist) )
+g <- count(spotify %>% distinct(genre) )
+a <- 
+g
+s
+```
+
+The data set contains `r s` songs The data set contains `r a` artist The data set contains `r g` genre. 
+
+## Question 2
+
+```{r}
+songs_per_year <- spotify %>%
+  group_by(year) %>%
+  summarize(song = n()) %>%
+  arrange(year)
+knitr::kable(songs_per_year, caption = "Number of Songs per Year")
+```
+
+## Question 3
+
+```{r}
+spotify |> 
+  distinct(song, artist) |> 
+  count(artist) |> 
+  slice_max(n)
+```
+```{r}
+most_popular_artist <- spotify %>%
+  group_by(artist) %>%
+  summarize(num_songs = n()) %>%
+  arrange(desc(num_songs)) %>%
+  slice(max(1))
+most_popular_artist_name <- most_popular_artist$artist
+cat("The most popular artist in the data set is:", most_popular_artist_name, "\n")
+
+```
+
